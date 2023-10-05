@@ -50,12 +50,8 @@ for p in data:
     new_visits = []
     for v in data[p]['visits']:
         new_visit = []
-        for c in v[0]:
-            new_visit.append(code_to_index[('DIAGNOSIS ICD9_CODE', c)])
-        for c in v[1]:
-            new_visit.append(code_to_index[('PROCEDURE ICD9_CODE', c)])
-        for c in v[2]:
-            new_visit.append(code_to_index[('NDC', c)])
+        for c in v:
+            new_visit.append(code_to_index[c])
                 
         new_visits.append((list(set(new_visit))))
         
