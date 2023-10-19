@@ -73,11 +73,11 @@ for p in (trainData + valData):
                         new_labs.append(labToNumber[idToLab[l]])
                         new_values.append(possibleValues[idToLab[l]].index(val))
                 else:
-                    if val < variableRanges[l][0] or val >= variableRanges[l][1]:
+                    if val < variableRanges[idToLab[l]][0] or val >= variableRanges[idToLab[l]][1]:
                         continue
                     
-                    new_labs.append(labToNumber[l])
-                    new_values.append(get_index(discretization, l, val))
+                    new_labs.append(labToNumber[idToLab[l]])
+                    new_values.append(get_index(discretization, idToLab[l], val))
 
             if not new_labs:
                 continue
