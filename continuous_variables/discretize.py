@@ -68,10 +68,10 @@ for p in (trainData + valData):
             new_labs = []
             new_values = []
             for l, val in zip(v[1], v[2]):
-                if isCategorical[l]:
+                if isCategorical[idToLab[l]]:
                     if val == 1:
-                        new_labs.append(labToNumber[l])
-                        new_values.append(possibleValues[l].index(val))
+                        new_labs.append(labToNumber[idToLab[l]])
+                        new_values.append(possibleValues[idToLab[l]].index(val))
                 else:
                     if val < variableRanges[l][0] or val >= variableRanges[l][1]:
                         continue
