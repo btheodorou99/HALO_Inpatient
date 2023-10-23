@@ -123,7 +123,7 @@ def generate_plots(stats1, stats2, label1, label2, types=["Per Record Code Proba
             plt.xlabel(label1)
             plt.ylabel(label2)
             plt.annotate(r2_score(values1, values2), (0,0))
-            plt.savefig(f"results/dataset_stats/{label2}_{label}_{t}_adjMax".replace(" ", "_"))
+            plt.savefig(f"results/dataset_stats/plots/{label2}_{t}.png".replace(" ", "_"))
 
 # Get shapes
 shape = {}
@@ -168,7 +168,7 @@ df.plot.kde()
 plt.xlim(-5,45)
 plt.xlabel('Number of Codes')
 plt.title('Visit Lengths Probability Density')
-plt.savefig(f"results/dataset_stats/visit_lengths.png")
+plt.savefig(f"results/dataset_stats/plots/visit_lengths.png")
 plt.clf()
 
 df = pd.DataFrame({'Train': pd.Series(shape['Train']['Record Lengths']), 'HALO': pd.Series(shape['HALO']['Record Lengths'])})
@@ -176,7 +176,7 @@ df.plot.kde()
 plt.xlim(-10,120)
 plt.xlabel('Number of Visits')
 plt.title('Record Lengths Probability Density')
-plt.savefig(f"results/dataset_stats/record_lengths.png")
+plt.savefig(f"results/dataset_stats/plots/record_lengths.png")
 plt.clf()
 
 df = pd.DataFrame({'Train': pd.Series(shape['Train']['Visit Gaps']), 'HALO': pd.Series(shape['HALO']['Visit Gaps'])})
@@ -184,7 +184,7 @@ df.plot.kde()
 plt.xlim(-1,20)
 plt.xlabel('Number of Hours')
 plt.title('Visit Gaps Probability Density')
-plt.savefig(f"results/dataset_stats/visit_gaps.png")
+plt.savefig(f"results/dataset_stats/plots/visit_gaps.png")
 plt.clf()
 
 df = pd.DataFrame({'Train': pd.Series(shape['Train']['Num Stays']), 'HALO': pd.Series(shape['HALO']['Num Stays'])})
@@ -192,7 +192,7 @@ df.plot.kde()
 plt.xlim(-1,5)
 plt.xlabel('Number of Stays')
 plt.title('Stay Count Probability Density')
-plt.savefig(f"results/dataset_stats/num_stays.png")
+plt.savefig(f"results/dataset_stats/plots/num_stays.png")
 plt.clf()
 
 df = pd.DataFrame({'Train': pd.Series(shape['Train']['Visit Ages']), 'HALO': pd.Series(shape['HALO']['Visit Ages'])})
@@ -200,7 +200,7 @@ df.plot.kde()
 plt.xlim(-1,20)
 plt.xlabel('Number of Years Old')
 plt.title('Visit Gaps Probability Density')
-plt.savefig(f"results/dataset_stats/visit_ages.png")
+plt.savefig(f"results/dataset_stats/plots/visit_ages.png")
 plt.clf()
 
 # Plot label plots
@@ -215,7 +215,7 @@ plt.ylabel('HALO Label Probability')
 plt.title('Chronic Condition Label and Demographic Probabilities')
 plt.plot([0,0.66], [0,0.66], 'k-', zorder=0)
 plt.legend()
-plt.savefig(f'results/dataset_stats/label_probs.png')
+plt.savefig(f'results/dataset_stats/plots/label_probs.png')
 plt.clf()
 
 # Plot lab mask plots
@@ -230,7 +230,7 @@ plt.ylabel('HALO Lab Probability')
 plt.title('Lab Presence Probabilities')
 plt.plot([0,1.0], [0,1.0], 'k-', zorder=0)
 plt.legend()
-plt.savefig(f'results/dataset_stats/lab_probs.png')
+plt.savefig(f'results/dataset_stats/plots/lab_probs.png')
 plt.clf()
 
 # Plot lab value plots
@@ -245,7 +245,7 @@ plt.ylabel('HALO Lab Value')
 plt.title('Average Lab Values')
 plt.plot([0,max([max(y), max(X)])], [0,max([max(y), max(X)])], 'k-', zorder=0)
 plt.legend()
-plt.savefig(f'results/dataset_stats/lab_values.png')
+plt.savefig(f'results/dataset_stats/plots/lab_values.png')
 
 # Plot lab value probabilities
 for m in range(len(idToLab)):
@@ -255,7 +255,7 @@ for m in range(len(idToLab)):
     plt.xlim(min(labs['Train']['All Values'][m] + labs['HALO']['All Values'][m]) - 1,max(labs['Train']['All Values'][m] + labs['HALO']['All Values'][m]) + 1)
     plt.xlabel('Lab Index')
     plt.title(f'{idToLab[m]} Index Probability Density')
-    plt.savefig(f"results/dataset_stats/labProbDist_{m}.png")
+    plt.savefig(f"results/dataset_stats/plots/labProbDist_{m}.png")
     plt.clf()
   except:
       print(f"No Values for {m}")
