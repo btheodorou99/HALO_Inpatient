@@ -201,7 +201,9 @@ for p in data:
                 
         new_visits.append((new_visit, v[1], v[2], v[3]))
     data[p]['visits'] = new_visits
+    
 index_to_code = {v: k for k, v in code_to_index.items()}
+data = list(data.values())
 
 # Train-Val-Test Split
 print("Splitting Datasets")
@@ -210,7 +212,6 @@ train_dataset, val_dataset = train_test_split(train_dataset, test_size=0.1, rand
 
 # Save Everything
 print("Saving Everything")
-data = list(data.values())
 print(len(index_to_code))
 print(len(data[0]['labels']))
 pickle.dump(dict((i, x) for (x, i) in list(group_to_id.items())), open("./data/idToLabel.pkl", "wb"))
