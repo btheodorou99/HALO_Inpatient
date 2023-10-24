@@ -17,7 +17,10 @@ From there,  edit the `mimic_dir` and `timeseries_dir` variables in the file `ge
 
 Next, according to the paper and HALO method, we need to discretize the continuous variables (lab values and inter-visit gaps) in order to feed them into our model. To do so, create a `discretized_data/` directory and run the file `discretize.py`
 
-At this point, the discretized data and correpsonidng artifacts will be available, and your dataset will be fully processed.
+At this point, the discretized data and correpsonding artifacts will be available, and your dataset will be fully processed.
+
+## Setting the Config
+Depending on any dataset changes, you may need to adjust the `config.py` file according to the dataset you are using. Specifically, you may need to set `code_vocab_size` and `label_vocab_size` based on what is printed at the end of running the `genDatasetContinuous.py` file and then set `lab_vocab_size` and `continuous_vocab_size` based on what is printed at the end of running the `discretize.py` file.
 
 ## Training a Model
 Next, a model can be training by creating an empt `save/` directory and running the `train_model.py` script.
