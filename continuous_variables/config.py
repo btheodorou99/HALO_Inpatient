@@ -35,7 +35,6 @@ class HALOConfig(object):
             lr=1e-4,
     ):
         self.total_vocab_size = total_vocab_size
-        self.type_vocab_size = type_vocab_size
         self.code_vocab_size = code_vocab_size
         self.label_vocab_size = label_vocab_size
         self.lab_vocab_size = lab_vocab_size
