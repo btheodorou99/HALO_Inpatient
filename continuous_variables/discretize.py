@@ -71,7 +71,7 @@ for p in (trainData + valData):
                 if isCategorical[idToLab[l]]:
                     if val == 1:
                         new_labs.append(labToNumber[idToLab[l]])
-                        new_values.append(possibleValues[idToLab[l]].index(val))
+                        new_values.append(beginPos[labToNumber[idToLab[l]]] - l)
                 else:
                     if val < variableRanges[idToLab[l]][0] or val >= variableRanges[idToLab[l]][1]:
                         continue
