@@ -212,8 +212,8 @@ train_dataset, val_dataset = train_test_split(train_dataset, test_size=0.1, rand
 
 # Save Everything
 print("Saving Everything")
-print(len(index_to_code))
-print(len(data[0]['labels']))
+print(f"CODE VOCAB SIZE: {len(index_to_code)}")
+print(f"LABEL VOCAB SIZE: {len(data[0]['labels'])}")
 pickle.dump(dict((i, x) for (x, i) in list(group_to_id.items())), open("./data/idToLabel.pkl", "wb"))
 pickle.dump(index_to_code, open("./data/indexToCode.pkl", "wb"))
 pickle.dump(data, open("./data/allData.pkl", "wb"))
