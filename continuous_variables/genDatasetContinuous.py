@@ -6,6 +6,8 @@ import yaml
 import pickle
 from sklearn.model_selection import train_test_split
 
+MAX_TIME_STEPS = 150
+
 mimic_dir = "./"
 timeseries_dir = "../../Code/mimic3-benchmarks/data/root/all/"
 valid_subjects = os.listdir(timeseries_dir)
@@ -204,6 +206,7 @@ for p in data:
     
 index_to_code = {v: k for k, v in code_to_index.items()}
 data = list(data.values())
+data = [{'labels': p['labels'], 'visits': p['visits'][:MAX_TIME_STEPS - 2]} for p in data] # 2 for the start and label visits
 
 # Train-Val-Test Split
 print("Splitting Datasets")
