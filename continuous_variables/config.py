@@ -18,9 +18,6 @@ class HALOConfig(object):
             continuous_lab_vocab_size=190,
             
             phenotype_labels=25, 
-            ethnicity_labels=10, 
-            gender_labels=2, 
-            
             n_positions=150,
             n_ctx=150,
             n_embd=1440,
@@ -43,8 +40,6 @@ class HALOConfig(object):
         self.continuous_vocab_size = continuous_vocab_size
         self.special_vocab_size = special_vocab_size
         self.phenotype_labels = phenotype_labels
-        self.gender_labels = gender_labels
-        self.ethnicity_labels = ethnicity_labels
         self.n_positions = n_positions
         self.n_ctx = n_ctx
         self.n_embd = n_embd
