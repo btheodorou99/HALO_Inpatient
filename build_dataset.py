@@ -45,18 +45,6 @@ for c in all_codes:
 print(f"VOCAB SIZE: {len(code_to_index)}")
 index_to_code = {v: k for k, v in code_to_index.items()}
 
-print("Converting Visits")
-for p in data:
-    new_visits = []
-    for v in data[p]['visits']:
-        new_visit = []
-        for c in v:
-            new_visit.append(code_to_index[c])
-                
-        new_visits.append((list(set(new_visit))))
-        
-    data[p]['visits'] = new_visits    
-
 data = list(data.values())
 
 print("Adding Labels")
@@ -86,6 +74,18 @@ for p in data:
         label[group_to_id[code_to_group[c]]] = 1
   
   p['labels'] = label
+
+print("Converting Visits")
+for p in data:
+    new_visits = []
+    for v in p['visits']:
+        new_visit = []
+        for c in v:
+            new_visit.append(code_to_index[c])
+                
+        new_visits.append((list(set(new_visit))))
+        
+    p['visits'] = new_visits    
 
 print(f"MAX LEN: {max([len(p['visits']) for p in data])}")
 print(f"AVG LEN: {np.mean([len(p['visits']) for p in data])}")
