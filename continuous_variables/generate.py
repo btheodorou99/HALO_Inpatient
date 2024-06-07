@@ -32,7 +32,7 @@ def sample_sequence(model, length, context, batch_size, device='cuda', sample=Tr
   with torch.no_grad():
     for _ in range(length-1):
       prev = model.sample(torch.cat((prev,empty), dim=1), sample)
-      if torch.sum(torch.sum(prev[:,:,config.code_vocab_size+config.label_vocab_size+1], dim=1).bool().int(), dim=0).item() == batch_size:
+      if torch.sum(torch.sum(prev[:,:,config.code_vocab_size+config.lab_vocab_size+config.continuous_vocab_size+config.label_vocab_size+1], dim=1).bool().int(), dim=0).item() == batch_size:
         break
   ehr = prev.cpu().detach().numpy()
   prev = None
