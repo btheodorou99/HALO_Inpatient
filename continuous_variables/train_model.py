@@ -6,6 +6,7 @@ import numpy as np
 from tqdm import tqdm
 from model import HALOModel
 from config import HALOConfig
+from collections import Counter
 
 SEED = 4
 random.seed(SEED)
@@ -42,7 +43,12 @@ for p in (train_ehr_dataset + val_ehr_dataset):
     new_visits.append(new_idx)
 
   p['visits'] = new_visits
-      
+
+labelCounts = Counter([tuple(p['labels']) for p in train_ehr_dataset])
+tot = len(train_ehr_dataset)
+labelProbs = {l: c / tot for (l, c) in labelCounts.items()}
+pickle.dump(labelProbs, open('data/labelProbs.pkl', 'wb'))
+
 def get_batch(loc, batch_size, mode):
   if mode == 'train':
     ehr = train_ehr_dataset[loc:loc+batch_size]
