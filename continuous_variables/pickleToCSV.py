@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from collections import defaultdict
 import csv
 
@@ -13,8 +14,13 @@ def flatten_data(subject_id, data, indexToCode, idToLabel, d_icd_diagnoses, d_ic
     d_icd_procedures['ICD9_CODE'] = d_icd_procedures['ICD9_CODE'].astype(str)
     d_icd_diagnoses['ICD9_CODE'] = d_icd_diagnoses['ICD9_CODE'].astype(str)
     
-    for visit in data['visits']:
+    for i, visit in enumerate(data['visits']):
         diagnosis_codes, lab_names, lab_values, time_since_last = visit
+        if i == 0:
+            age = time_since_last[0]
+            time_since_last = np.nan
+        else:
+            time_since_last = time_since_last[0]
 
         # Convert the diagnosis codes to true medical codes
         all_codes = [indexToCode[code] if code in indexToCode else code for code in diagnosis_codes]
@@ -55,7 +61,8 @@ def flatten_data(subject_id, data, indexToCode, idToLabel, d_icd_diagnoses, d_ic
 
         row = defaultdict(str)
         row['Visit Number'] = visit_number
-        row['Time Since Last Visit'] = time_since_last[0]
+        row['Age'] = age
+        row['Time Since Last Visit'] = time_since_last
         row['Medication Labels'] = ', '.join(medication_labels)
         row['Diagnosis Labels'] = ', '.join(diagnosis_labels)
         row['Procedure Labels'] = ', '.join(procedure_labels)
