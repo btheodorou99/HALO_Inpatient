@@ -16,6 +16,8 @@ def flatten_data(subject_id, data, indexToCode, idToLabel, d_icd_diagnoses, d_ic
     
     for i, visit in enumerate(data['visits']):
         diagnosis_codes, lab_names, lab_values, time_since_last = visit
+
+        # The first "visit gap" is the patient's age (as there's no previous visit to have a gap from)
         if i == 0:
             age = time_since_last[0]
             time_since_last = np.nan
