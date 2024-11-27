@@ -9,7 +9,7 @@ from sklearn.metrics import r2_score
 config = HALOConfig()
 
 label_mapping = pickle.load(open("./data/idToLabel.pkl", "rb"))
-label_mapping[25] = 'Overall'
+label_mapping.append("Overall")
 
 config = HALOConfig()
 train_ehr_dataset = pickle.load(open('./data/trainDataset.pkl', 'rb'))
@@ -23,7 +23,7 @@ synteg_ehr_dataset = pickle.load(open('./results/datasets/syntegDataset.pkl', 'r
 synteg_ehr_dataset = [{'labels': p['labels'], 'visits': p['visits']} for p in synteg_ehr_dataset if len(p['visits']) > 0]
 eva_ehr_dataset = pickle.load(open('./results/datasets/evaDataset.pkl', 'rb'))
 eva_ehr_dataset = [{'labels': p['labels'], 'visits': p['visits']} for p in eva_ehr_dataset if len(p['visits']) > 0]
-gpt_ehr_dataset = pickle.load(open('./results/datasets/gpt_baseDataset.pkl', 'rb'))
+gpt_ehr_dataset = pickle.load(open("./results/datasets/gptDataset.pkl", "rb"))
 gpt_ehr_dataset = [{'labels': p['labels'], 'visits': p['visits']} for p in gpt_ehr_dataset if len(p['visits']) > 0]
 
 stats = {}
@@ -120,7 +120,7 @@ def generate_statistics(ehr_dataset):
     label_probs = {l: label_counts[l]/n_records for l in label_counts}
     stats["Label Probabilities"] = label_probs
     return stats
-    
+
 def generate_plots(stats1, stats2, label1, label2, types=["Per Record Code Probabilities", "Per Visit Code Probabilities", "Per Record Bigram Probabilities", "Per Visit Bigram Probabilities", "Per Record Sequential Visit Bigram Probabilities", "Per Visit Sequential Visit Bigram Probabilities"]):
     for i in tqdm(range(config.label_vocab_size, config.label_vocab_size + 1)):
         print("\n")
