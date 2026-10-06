@@ -8,9 +8,9 @@ from sklearn.model_selection import train_test_split
 
 MAX_TIME_STEPS = 150
 
-mimic_dir = "./"
+mimic_dir = "./data/"
 timeseries_dir = "../../Code/mimic3-benchmarks/data/root/all/"
-valid_subjects = os.listdir(timeseries_dir)
+#valid_subjects = os.listdir(timeseries_dir)
 patientsFile = mimic_dir + 'PATIENTS.csv'
 admissionFile = mimic_dir + "ADMISSIONS.csv"
 diagnosisFile = mimic_dir + "DIAGNOSES_ICD.csv"
@@ -24,33 +24,33 @@ begin_pos = pickle.load(open(mimic_dir + 'begin_pos.pkl', 'rb'))
 end_pos = pickle.load(open(mimic_dir + 'end_pos.pkl', 'rb'))
     
 print("Loading CSVs Into Dataframes")
-patientsDf = pd.read_csv(patientsFile, dtype=str).set_index("SUBJECT_ID")
-patientsDf = patientsDf[['GENDER', 'DOB']]
-patientsDf['DOB'] = pd.to_datetime(patientsDf['DOB'])
+patientsDf = pd.read_csv(patientsFile, dtype=str).set_index("subject_id")
+patientsDf = patientsDf[['gender', 'dob']]
+patientsDf['dob'] = pd.to_datetime(patientsDf['dob'])
 admissionDf = pd.read_csv(admissionFile, dtype=str)
-admissionDf['ADMITTIME'] = pd.to_datetime(admissionDf['ADMITTIME'])
-admissionDf = admissionDf.sort_values('ADMITTIME')
+admissionDf['admittime'] = pd.to_datetime(admissionDf['admittime'])
+admissionDf = admissionDf.sort_values('admittime')
 admissionDf = admissionDf.reset_index(drop=True)
-diagnosisDf = pd.read_csv(diagnosisFile, dtype=str).set_index("HADM_ID")
-diagnosisDf = diagnosisDf[diagnosisDf['ICD9_CODE'].notnull()]
-diagnosisDf = diagnosisDf[['ICD9_CODE']]
-procedureDf = pd.read_csv(procedureFile, dtype=str).set_index("HADM_ID")
-procedureDf = procedureDf[procedureDf['ICD9_CODE'].notnull()]
-procedureDf = procedureDf[['ICD9_CODE']]
-medicationDf = pd.read_csv(medicationFile, dtype=str).set_index("HADM_ID")
-medicationDf = medicationDf[medicationDf['NDC'].notnull()]
-medicationDf = medicationDf[medicationDf['NDC'] != 0]
-medicationDf = medicationDf[['NDC', 'DRUG']]
-medicationDf['NDC'] = medicationDf['NDC'].astype(int).astype(str)
-medicationDf['NDC'] = [('0' * (11 - len(c))) + c for c in medicationDf['NDC']]
-medicationDf['NDC'] = [c[0:5] + '-' + c[5:9] + '-' + c[10:12] for c in medicationDf['NDC']]
+diagnosisDf = pd.read_csv(diagnosisFile, dtype=str).set_index("hadm_id")
+diagnosisDf = diagnosisDf[diagnosisDf['icd9_code'].notnull()]
+diagnosisDf = diagnosisDf[['icd9_code']]
+procedureDf = pd.read_csv(procedureFile, dtype=str).set_index("hadm_id")
+procedureDf = procedureDf[procedureDf['icd9_code'].notnull()]
+procedureDf = procedureDf[['icd9_code']]
+medicationDf = pd.read_csv(medicationFile, dtype=str).set_index("hadm_id")
+medicationDf = medicationDf[medicationDf['ndc'].notnull()]
+medicationDf = medicationDf[medicationDf['ndc'] != 0]
+medicationDf = medicationDf[['ndc', 'drug']]
+medicationDf['ndc'] = medicationDf['ndc'].astype(int).astype(str)
+medicationDf['ndc'] = [('0' * (11 - len(c))) + c for c in medicationDf['ndc']]
+medicationDf['ndc'] = [c[0:5] + '-' + c[5:9] + '-' + c[10:12] for c in medicationDf['ndc']]
 
 print("Building Dataset")
 data = {}
 for row in tqdm(admissionDf.itertuples(), total=len(admissionDf)):          
-    hadm_id = row.HADM_ID
-    subject_id = row.SUBJECT_ID
-    admit_time = row.ADMITTIME
+    hadm_id = row.hadm_id
+    subject_id = row.subject_id
+    admit_time = row.admittime
     
     if subject_id not in patientsDf.index:
         continue
@@ -61,25 +61,25 @@ for row in tqdm(admissionDf.itertuples(), total=len(admissionDf)):
     
     # Extract the gender and age
     patientRow = patientsDf.loc[[subject_id]].iloc[0]
-    age = (admit_time.to_pydatetime() - patientRow['DOB'].to_pydatetime()).days / 365
+    age = (admit_time.to_pydatetime() - patientRow['dob'].to_pydatetime()).days / 365
     if age > 120:
         continue
             
     # Extracting the Diagnoses
     if hadm_id in diagnosisDf.index: 
-        diagnoses = list(set(diagnosisDf.loc[[hadm_id]]["ICD9_CODE"]))
+        diagnoses = list(set(diagnosisDf.loc[[hadm_id]]["icd9_code"]))
     else:
         diagnoses = []
     
     # Extracting the Procedures
     if hadm_id in procedureDf.index: 
-        procedures = list(set(procedureDf.loc[[hadm_id]]["ICD9_CODE"]))
+        procedures = list(set(procedureDf.loc[[hadm_id]]["icd9_code"]))
     else:
         procedures = []
         
     # Extracting the Medications
     if hadm_id in medicationDf.index: 
-        medications = list(set(medicationDf.loc[[hadm_id]]["NDC"]))
+        medications = list(set(medicationDf.loc[[hadm_id]]["ndc"]))
     else:
         medications = []
         
@@ -133,7 +133,7 @@ for row in tqdm(admissionDf.itertuples(), total=len(admissionDf)):
 
 # Build the label mapping
 print("Adding Labels")
-with open("hcup_ccs_2015_definitions_benchmark.yaml") as definitions_file:
+with open("../hcup_ccs_2015_definitions_benchmark.yaml") as definitions_file:
     definitions = yaml.full_load(definitions_file)
 
 code_to_group = {}
@@ -166,7 +166,7 @@ for p in data:
 
 # Convert diagnoses, procedures, and medications to text
 print("Converting Codes to Text")
-medMapping = {row['NDC']: row['DRUG'] for _, row in medicationDf.iterrows()}
+medMapping = {row['ndc']: row['drug'] for _, row in medicationDf.iterrows()}
 for p in data:
     new_visits = []
     for v in data[p]['visits']:

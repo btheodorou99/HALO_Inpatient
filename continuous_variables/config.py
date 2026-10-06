@@ -11,7 +11,7 @@ class HALOConfig(object):
             code_vocab_size=14167,
             lab_vocab_size=237,
             continuous_vocab_size=15,
-            label_vocab_size=65,
+            label_vocab_size=25,
             special_vocab_size=3,
 
             categorical_lab_vocab_size=47,
@@ -21,14 +21,14 @@ class HALOConfig(object):
             n_positions=150,
             n_ctx=150,
             n_embd=1440,
-            n_layer=12,
+            n_layer=4,
             n_head=18,
             layer_norm_epsilon=1e-5,
             initializer_range=0.02,
             
-            batch_size=56,
-            sample_batch_size=128,
-            epoch=50,
+            batch_size=50,
+            sample_batch_size=64,
+            epoch=5,
             lr=1e-4,
     ):
         self.total_vocab_size = total_vocab_size

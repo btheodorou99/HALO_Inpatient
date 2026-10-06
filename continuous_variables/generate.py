@@ -5,8 +5,8 @@ import random
 import numpy as np
 from sys import argv
 from tqdm import tqdm
-from discretized_model import HALOModel
-from discretized_config import HALOConfig
+from model import HALOModel
+from config import HALOConfig
 
 config = HALOConfig()
 device = torch.device('cuda' if torch.cuda.is_available() else "cpu")

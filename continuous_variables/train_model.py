@@ -28,11 +28,11 @@ else:
 if torch.cuda.is_available():
   torch.cuda.manual_seed_all(SEED)
 
-train_ehr_dataset = pickle.load(open('discretized_data/trainDataset.pkl', 'rb'))
-val_ehr_dataset = pickle.load(open('discretized_data/valDataset.pkl', 'rb'))
+train_ehr_dataset = pickle.load(open('./data/trainData.pkl', 'rb'))
+val_ehr_dataset = pickle.load(open('./data/valData.pkl', 'rb'))
 
 # Convert to fully codes
-beginPos = pickle.load(open('discretized_data/beginPos.pkl', 'rb')) 
+beginPos = pickle.load(open('./data/beginPos.pkl', 'rb')) 
 for p in (train_ehr_dataset + val_ehr_dataset):
   new_visits = []
   for v in p['visits']:
@@ -47,7 +47,7 @@ for p in (train_ehr_dataset + val_ehr_dataset):
 labelCounts = Counter([tuple(p['labels']) for p in train_ehr_dataset])
 tot = len(train_ehr_dataset)
 labelProbs = {l: c / tot for (l, c) in labelCounts.items()}
-pickle.dump(labelProbs, open('data/labelProbs.pkl', 'wb'))
+pickle.dump(labelProbs, open('./data/labelProbs.pkl', 'wb'))
 
 def get_batch(loc, batch_size, mode):
   if mode == 'train':
@@ -101,7 +101,7 @@ for e in tqdm(range(config.epoch)):
     optimizer.step()
     
     if i % (50*config.batch_size) == 0:
-      print("Epoch %d, Iter %d: Training Loss:%.6f"%(e, i, loss))
+      print("Epoch %d, Iter %d: Training Loss:%.6f"%(e, i, loss.item()))
     if i % (250*config.batch_size) == 0:
       if i == 0:
         continue

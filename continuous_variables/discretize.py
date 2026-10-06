@@ -1,14 +1,14 @@
 import pickle
 
-trainData = pickle.load(open('data/trainDataset.pkl', 'rb'))
-valData = pickle.load(open('data/valDataset.pkl', 'rb'))
+trainData = pickle.load(open('./data/trainData.pkl', 'rb'))
+valData = pickle.load(open('./data/valData.pkl', 'rb'))
 
-idToLab = pickle.load(open('data/idx_to_lab.pkl', 'rb'))
-labToNumber = {l: i for (i,l) in enumerate(pickle.load(open('data/id_to_channel.pkl', 'rb')))}
-isCategorical = pickle.load(open('data/is_categorical_channel.pkl', 'rb'))
-beginPos = pickle.load(open('data/begin_pos.pkl', 'rb'))
-possibleValues = pickle.load(open('data/possible_values.pkl', 'rb'))
-variableRanges = pickle.load(open('data/variable_ranges.pkl', 'rb'))
+idToLab = pickle.load(open('./data/idx_to_lab.pkl', 'rb'))
+labToNumber = {l: i for (i,l) in enumerate(pickle.load(open('./data/id_to_channel.pkl', 'rb')))}
+isCategorical = pickle.load(open('./data/is_categorical_channel.pkl', 'rb'))
+beginPos = pickle.load(open('./data/begin_pos.pkl', 'rb'))
+possibleValues = pickle.load(open('./data/possible_values.pkl', 'rb'))
+variableRanges = pickle.load(open('./data/variable_ranges.pkl', 'rb'))
 
 discretization = {
     'Diastolic blood pressure': [0, 40, 50, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 120, 130, 375],
@@ -86,8 +86,8 @@ for p in (trainData + valData):
     
     p['visits'] = new_visits
 
-pickle.dump(trainData, open('discretized_data/trainDataset.pkl', 'wb'))
-pickle.dump(valData, open('discretized_data/valDataset.pkl', 'wb'))
+pickle.dump(trainData, open('./data/trainData.pkl', 'wb'))
+pickle.dump(valData, open('./data/valData.pkl', 'wb'))
 
 newIdToLab = {i:l for (l,i) in labToNumber.items()}
 newBeginPos = []
@@ -109,13 +109,13 @@ for i in range(len(newBeginPos) - 1):
 for j in range(newBeginPos[-1], newBeginPos[-1] + len(discretization[newIdToLab[len(newBeginPos) - 1]]) - 1):
     newIdxToId[j] = len(newBeginPos) - 1
 
-pickle.dump(newIdxToId, open('discretized_data/idxToId.pkl', 'wb'))
-pickle.dump(formatMap, open('discretized_data/formatMap.pkl', 'wb'))
-pickle.dump(newIdToLab, open('discretized_data/idToLab.pkl', 'wb'))
-pickle.dump(newBeginPos, open('discretized_data/beginPos.pkl', 'wb')) 
-pickle.dump(isCategorical, open('discretized_data/isCategorical.pkl', 'wb')) 
-pickle.dump(possibleValues, open('discretized_data/possibleValues.pkl', 'wb'))
-pickle.dump(discretization, open('discretized_data/discretization.pkl', 'wb'))
+pickle.dump(newIdxToId, open('./data/idxToId.pkl', 'wb'))
+pickle.dump(formatMap, open('./data/formatMap.pkl', 'wb'))
+pickle.dump(newIdToLab, open('./data/idToLab.pkl', 'wb'))
+pickle.dump(newBeginPos, open('./data/beginPos.pkl', 'wb')) 
+pickle.dump(isCategorical, open('./data/isCategorical.pkl', 'wb')) 
+pickle.dump(possibleValues, open('./data/possibleValues.pkl', 'wb'))
+pickle.dump(discretization, open('./data/discretization.pkl', 'wb'))
 
 print(f"NUM LABS: {newBeginPos[-1] + len(discretization[newIdToLab[16]]) - 1}")
 print(f"NUM CONTINUOUS: {len(discretization['Age']) - 1}")
